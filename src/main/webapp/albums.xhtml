@@ -62,6 +62,53 @@
         </div>
     </h:form>
 
+    <h:form>
+        <a4j:commandButton value="Add recording">
+            <rich:componentControl target="recordingSelectionPopup" operation="show"/>
+        </a4j:commandButton>
+        <rich:dataTable id="albumTracks" value="#{albumsView.albumTracks}" var="track">
+            <rich:column>
+                <f:facet name="header">Position</f:facet>
+                #{track.position}
+            </rich:column>
+            <rich:column>
+                <f:facet name="header">Artist</f:facet>
+                #{track.recording.artist.name}
+            </rich:column>
+            <rich:column>
+                <f:facet name="header">Recording</f:facet>
+                #{track.recording.title}
+            </rich:column>
+        </rich:dataTable>
+    </h:form>
+
+    <rich:popupPanel id="recordingSelectionPopup" autosized="true">
+        <h:form>
+            <rich:dataTable id="recordingSelectionTable" value="#{albumsView.recordings}" var="recording">
+                <rich:column>
+                    <h:selectBooleanCheckbox value="#{albumsView.recordingSelection[recording]}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Id</f:facet>
+                    #{recording.id}
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Artist</f:facet>
+                    #{recording.artist.name}
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Artist</f:facet>
+                    #{recording.title}
+                </rich:column>
+            </rich:dataTable>
+            <a4j:commandButton value="Close">
+                <rich:componentControl target="recordingSelectionPopup" operation="hide"/>
+            </a4j:commandButton>
+            <a4j:commandButton value="Add to album" action="#{albumsView.addSelectedRecordings}" execute="recordingSelectionTable" render="albumTracks"
+                               oncomplete="#{rich:component('recordingSelectionPopup')}.hide()"/>
+        </h:form>
+    </rich:popupPanel>
+
 </h:body>
 
 </html>

@@ -3,10 +3,13 @@ package pl.itcrowd.tutorials.richfaces.view;
 import pl.itcrowd.tutorials.richfaces.dao.AlbumDAO;
 import pl.itcrowd.tutorials.richfaces.dao.ArtistDAO;
 import pl.itcrowd.tutorials.richfaces.dao.EnsembleDAO;
+import pl.itcrowd.tutorials.richfaces.dao.RecordingDAO;
 import pl.itcrowd.tutorials.richfaces.domain.Album;
 import pl.itcrowd.tutorials.richfaces.domain.AlbumTranslation;
 import pl.itcrowd.tutorials.richfaces.domain.Artist;
 import pl.itcrowd.tutorials.richfaces.domain.Ensemble;
+import pl.itcrowd.tutorials.richfaces.domain.Recording;
+import pl.itcrowd.tutorials.richfaces.domain.Track;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -14,6 +17,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +33,8 @@ public class AlbumsView implements Serializable {
     @ManagedProperty("#{albumDAO}")
     private AlbumDAO albumDAO;
 
+    private List<Track> albumTracks;
+
     @ManagedProperty("#{artistDAO}")
     private ArtistDAO artistDAO;
 
@@ -39,6 +46,13 @@ public class AlbumsView implements Serializable {
     private List<Ensemble> ensembles;
 
     private List<Locale> locales;
+
+    @ManagedProperty("#{recordingDAO}")
+    private RecordingDAO recordingDAO;
+
+    private Map<Recording, Boolean> recordingSelection = new HashMap<Recording, Boolean>();
+
+    private List<Recording> recordings;
 
     public AlbumsView()
     {
@@ -58,6 +72,16 @@ public class AlbumsView implements Serializable {
     public void setAlbumDAO(AlbumDAO albumDAO)
     {
         this.albumDAO = albumDAO;
+    }
+
+    public List<Track> getAlbumTracks()
+    {
+        if (albumTracks == null) {
+            albumTracks = new ArrayList<Track>();
+            albumTracks.addAll(album.getTracks());
+            Collections.sort(albumTracks);
+        }
+        return albumTracks;
     }
 
     public List<Album> getAlbums()
@@ -113,10 +137,48 @@ public class AlbumsView implements Serializable {
         return locales;
     }
 
+    public RecordingDAO getRecordingDAO()
+    {
+        return recordingDAO;
+    }
+
+    public void setRecordingDAO(RecordingDAO recordingDAO)
+    {
+        this.recordingDAO = recordingDAO;
+    }
+
+    public Map<Recording, Boolean> getRecordingSelection()
+    {
+        return recordingSelection;
+    }
+
+    public List<Recording> getRecordings()
+    {
+        if (recordings == null) {
+            recordings = recordingDAO.getAllRecordings();
+        }
+        return recordings;
+    }
+
+    public void addSelectedRecordings()
+    {
+        for (Map.Entry<Recording, Boolean> entry : recordingSelection.entrySet()) {
+            if (entry.getValue()) {
+                final Track track = new Track();
+                track.setAlbum(album);
+                track.setPosition(album.getTracks().size() + 1);
+                track.setRecording(entry.getKey());
+                album.getTracks().add(track);
+            }
+        }
+        albumTracks = null;
+    }
+
     public void save()
     {
         albumDAO.save(album);
         album = new Album();
+        albumTracks = null;
         setupTranslations();
     }
 

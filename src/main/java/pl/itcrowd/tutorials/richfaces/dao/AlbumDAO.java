@@ -4,6 +4,7 @@ import pl.itcrowd.tutorials.richfaces.domain.Album;
 import pl.itcrowd.tutorials.richfaces.domain.AlbumTranslation;
 import pl.itcrowd.tutorials.richfaces.domain.Artist;
 import pl.itcrowd.tutorials.richfaces.domain.Ensemble;
+import pl.itcrowd.tutorials.richfaces.domain.Track;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
@@ -27,6 +28,8 @@ public class AlbumDAO {
     private long ALBUM_ID_SEQUENCE = 1;
 
     private long ALBUM_TRANSLATION_ID_SEQUENCE = 1;
+
+    private long TRACK_ID_SEQUENCE = 1;
 
     @ManagedProperty("#{artistDAO}")
     private ArtistDAO artistDAO;
@@ -85,6 +88,11 @@ public class AlbumDAO {
                 iterator.remove();
             } else if (translation.getId() == null) {
                 translation.setId(ALBUM_TRANSLATION_ID_SEQUENCE++);
+            }
+        }
+        for (Track track : album.getTracks()) {
+            if (track.getId() == null) {
+                track.setId(TRACK_ID_SEQUENCE++);
             }
         }
         if (!albums.contains(album)) {

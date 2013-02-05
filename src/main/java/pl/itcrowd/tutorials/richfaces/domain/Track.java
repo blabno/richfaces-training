@@ -1,6 +1,6 @@
 package pl.itcrowd.tutorials.richfaces.domain;
 
-public class Track {
+public class Track implements Comparable<Track> {
 
     private Album album;
 
@@ -51,6 +51,12 @@ public class Track {
     }
 
     @Override
+    public int compareTo(Track track)
+    {
+        return Integer.valueOf(position).compareTo(track.getPosition());
+    }
+
+    @Override
     public boolean equals(Object o)
     {
         if (this == o) {
@@ -62,7 +68,7 @@ public class Track {
 
         Track track = (Track) o;
 
-        return !(id != null ? !id.equals(track.id) : track.id != null);
+        return !(getId() == null || !getId().equals(track.getId()));
     }
 
     @Override
