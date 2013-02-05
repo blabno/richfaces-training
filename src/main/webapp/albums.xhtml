@@ -13,53 +13,61 @@
 
     <rich:notifyMessages globalOnly="false" ajaxRendered="true"/>
 
-    <rich:dataTable value="#{albumsView.albums}" var="album">
-        <rich:column>
-            <f:facet name="header">Artist</f:facet>
-            #{album.artist.name}
-        </rich:column>
-        <rich:column>
-            <f:facet name="header">Ensemble</f:facet>
-            #{album.ensemble.name}
-        </rich:column>
-        <rich:column>
-            <f:facet name="header">Id</f:facet>
-            #{album.id}
-        </rich:column>
-        <rich:column>
-            <f:facet name="header">Title</f:facet>
-            #{album.translations[facesContext.viewRoot.locale.ISO3Language].title}
-        </rich:column>
-    </rich:dataTable>
+    <h:form>
+        <rich:dataTable value="#{albumsView.albums}" var="album">
+            <rich:column>
+                <f:facet name="header">Artist</f:facet>
+                #{album.artist.name}
+            </rich:column>
+            <rich:column>
+                <f:facet name="header">Ensemble</f:facet>
+                #{album.ensemble.name}
+            </rich:column>
+            <rich:column>
+                <f:facet name="header">Id</f:facet>
+                #{album.id}
+            </rich:column>
+            <rich:column>
+                <f:facet name="header">Title</f:facet>
+                #{album.translations[facesContext.viewRoot.locale.ISO3Language].title}
+            </rich:column>
+            <rich:column>
+                <a4j:commandButton value="Edit" action="#{albumsView.edit(album)}" render="albumDetailsContainer albumTracks"/>
+            </rich:column>
+        </rich:dataTable>
+        <a4j:commandButton value="New" action="#{albumsView.newAlbum}" render="albumDetailsContainer albumTracks"/>
+    </h:form>
 
     <h:form>
-        <rich:tabPanel>
-            <a4j:repeat value="#{albumsView.languages}" var="language">
-                <rich:tab name="tab#{language.displayName}" title="#{language.language}">
-                    <f:facet name="header">#{language.language}</f:facet>
-                    <h:outputLabel for="title" value="Title"/>
-                    <h:inputText id="title" value="#{albumsView.album.translations[language.ISO3Language].title}"/>
-                </rich:tab>
-            </a4j:repeat>
-        </rich:tabPanel>
+        <h:panelGroup id="albumDetailsContainer">
+            <rich:tabPanel>
+                <a4j:repeat value="#{albumsView.languages}" var="language">
+                    <rich:tab name="tab#{language.displayName}" title="#{language.language}">
+                        <f:facet name="header">#{language.language}</f:facet>
+                        <h:outputLabel for="title" value="Title"/>
+                        <h:inputText id="title" value="#{albumsView.album.translations[language.ISO3Language].title}"/>
+                    </rich:tab>
+                </a4j:repeat>
+            </rich:tabPanel>
 
-        <h:outputLabel for="ensembles" value="Ensemble"/>
-        <h:selectOneListbox id="ensembles" size="1" value="#{albumsView.album.ensemble}">
-            <f:selectItem noSelectionOption="true"/>
-            <f:selectItems value="#{albumsView.ensembles}" var="ensemble" itemValue="#{ensemble}" itemLabel="#{ensemble.name}"/>
-            <a4j:ajax event="change" render="artists"/>
-        </h:selectOneListbox>
+            <h:outputLabel for="ensembles" value="Ensemble"/>
+            <h:selectOneListbox id="ensembles" size="1" value="#{albumsView.album.ensemble}">
+                <f:selectItem noSelectionOption="true"/>
+                <f:selectItems value="#{albumsView.ensembles}" var="ensemble" itemValue="#{ensemble}" itemLabel="#{ensemble.name}"/>
+                <a4j:ajax event="change" render="artists"/>
+            </h:selectOneListbox>
 
-        <h:outputLabel for="artists" value="Artist"/>
-        <h:selectOneListbox id="artists" size="1" value="#{albumsView.album.artist}">
-            <f:selectItem noSelectionOption="true"/>
-            <f:selectItems value="#{albumsView.artists}" var="artist" itemValue="#{artist}" itemLabel="#{artist.name}"/>
-            <a4j:ajax event="change" render="ensembles"/>
-        </h:selectOneListbox>
+            <h:outputLabel for="artists" value="Artist"/>
+            <h:selectOneListbox id="artists" size="1" value="#{albumsView.album.artist}">
+                <f:selectItem noSelectionOption="true"/>
+                <f:selectItems value="#{albumsView.artists}" var="artist" itemValue="#{artist}" itemLabel="#{artist.name}"/>
+                <a4j:ajax event="change" render="ensembles"/>
+            </h:selectOneListbox>
 
-        <div>
-            <h:commandButton value="Save" action="#{albumsView.save}"/>
-        </div>
+            <div>
+                <h:commandButton value="Save" action="#{albumsView.save}"/>
+            </div>
+        </h:panelGroup>
     </h:form>
 
     <h:form>

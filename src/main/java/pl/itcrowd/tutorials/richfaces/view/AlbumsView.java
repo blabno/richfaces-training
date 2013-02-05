@@ -28,7 +28,7 @@ import java.util.Map;
 @ManagedBean
 public class AlbumsView implements Serializable {
 
-    private Album album = new Album();
+    private Album album;
 
     @ManagedProperty("#{albumDAO}")
     private AlbumDAO albumDAO;
@@ -56,7 +56,7 @@ public class AlbumsView implements Serializable {
 
     public AlbumsView()
     {
-        setupTranslations();
+        edit(new Album());
     }
 
     public Album getAlbum()
@@ -160,6 +160,13 @@ public class AlbumsView implements Serializable {
         return recordings;
     }
 
+    public void edit(Album album)
+    {
+        this.album = album;
+        albumTracks = null;
+        setupTranslations();
+    }
+
     public void addSelectedRecordings()
     {
         for (Map.Entry<Recording, Boolean> entry : recordingSelection.entrySet()) {
@@ -174,12 +181,15 @@ public class AlbumsView implements Serializable {
         albumTracks = null;
     }
 
+    public void newAlbum()
+    {
+        edit(new Album());
+    }
+
     public void save()
     {
         albumDAO.save(album);
-        album = new Album();
-        albumTracks = null;
-        setupTranslations();
+        edit(new Album());
     }
 
     private void setupTranslations()
