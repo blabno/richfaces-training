@@ -2,13 +2,35 @@
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:rich="http://richfaces.org/rich" xmlns:f="http://java.sun.com/jsf/core">
 
 <h:head>
     <title>Albums</title>
 </h:head>
 
 <h:body>
+
+    <rich:notifyMessages globalOnly="false" ajaxRendered="true"/>
+
+    <rich:dataTable value="#{albumsView.albums}" var="album">
+        <rich:column>
+            <f:facet name="header">Artist</f:facet>
+            #{album.artist.name}
+        </rich:column>
+        <rich:column>
+            <f:facet name="header">Ensemble</f:facet>
+            #{album.ensemble.name}
+        </rich:column>
+        <rich:column>
+            <f:facet name="header">Id</f:facet>
+            #{album.id}
+        </rich:column>
+        <rich:column>
+            <f:facet name="header">Title</f:facet>
+            #{album.translations[facesContext.viewRoot.locale.ISO3Language].title}
+        </rich:column>
+    </rich:dataTable>
+
 
 </h:body>
 

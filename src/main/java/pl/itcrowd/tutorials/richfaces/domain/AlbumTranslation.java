@@ -8,18 +8,18 @@ public class AlbumTranslation {
 
     private String language;
 
-    private String translation;
+    private String title;
 
     public AlbumTranslation()
     {
     }
 
-    public AlbumTranslation(Album album, Long id, String language, String translation)
+    public AlbumTranslation(Album album, Long id, String language, String title)
     {
         this.album = album;
         this.id = id;
         this.language = language;
-        this.translation = translation;
+        this.title = title;
     }
 
     public Album getAlbum()
@@ -52,14 +52,14 @@ public class AlbumTranslation {
         this.language = language;
     }
 
-    public String getTranslation()
+    public String getTitle()
     {
-        return translation;
+        return title;
     }
 
-    public void setTranslation(String translation)
+    public void setTitle(String title)
     {
-        this.translation = translation;
+        this.title = title;
     }
 
     @Override
