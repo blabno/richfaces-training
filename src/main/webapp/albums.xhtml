@@ -42,7 +42,24 @@
                 </rich:tab>
             </a4j:repeat>
         </rich:tabPanel>
-        <h:commandButton value="Save" action="#{albumsView.save}"/>
+
+        <h:outputLabel for="ensembles" value="Ensemble"/>
+        <h:selectOneListbox id="ensembles" size="1" value="#{albumsView.album.ensemble}">
+            <f:selectItem noSelectionOption="true"/>
+            <f:selectItems value="#{albumsView.ensembles}" var="ensemble" itemValue="#{ensemble}" itemLabel="#{ensemble.name}"/>
+            <a4j:ajax event="change" render="artists"/>
+        </h:selectOneListbox>
+
+        <h:outputLabel for="artists" value="Artist"/>
+        <h:selectOneListbox id="artists" size="1" value="#{albumsView.album.artist}">
+            <f:selectItem noSelectionOption="true"/>
+            <f:selectItems value="#{albumsView.artists}" var="artist" itemValue="#{artist}" itemLabel="#{artist.name}"/>
+            <a4j:ajax event="change" render="ensembles"/>
+        </h:selectOneListbox>
+
+        <div>
+            <h:commandButton value="Save" action="#{albumsView.save}"/>
+        </div>
     </h:form>
 
 </h:body>

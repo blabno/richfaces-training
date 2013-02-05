@@ -23,4 +23,15 @@ public class EnsembleDAO {
     {
         return Collections.unmodifiableList(ensembles);
     }
+
+    public Ensemble getEnsembleById(long id)
+    {
+        for (Ensemble ensemble : ensembles) {
+            final Long ensembleId = ensemble.getId();
+            if (ensembleId != null && id == ensembleId) {
+                return ensemble;
+            }
+        }
+        return null;
+    }
 }

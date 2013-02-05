@@ -10,4 +10,14 @@
         </locale-config>
     </application>
 
+    <converter>
+        <converter-for-class>pl.itcrowd.tutorials.richfaces.domain.Ensemble</converter-for-class>
+        <converter-class>pl.itcrowd.tutorials.richfaces.view.EnsembleConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>pl.itcrowd.tutorials.richfaces.domain.Artist</converter-for-class>
+        <converter-class>pl.itcrowd.tutorials.richfaces.view.ArtistConverter</converter-class>
+    </converter>
+
 </faces-config>

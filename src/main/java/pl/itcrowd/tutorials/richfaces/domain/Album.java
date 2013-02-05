@@ -24,6 +24,9 @@ public class Album {
 
     public void setArtist(Artist artist)
     {
+        if (artist != null) {
+            ensemble = null;
+        }
         this.artist = artist;
     }
 
@@ -34,6 +37,9 @@ public class Album {
 
     public void setEnsemble(Ensemble ensemble)
     {
+        if (ensemble != null) {
+            artist = null;
+        }
         this.ensemble = ensemble;
     }
 

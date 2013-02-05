@@ -23,4 +23,15 @@ public class ArtistDAO {
     {
         return Collections.unmodifiableList(artists);
     }
+
+    public Artist getArtistById(long id)
+    {
+        for (Artist artist : artists) {
+            final Long artistId = artist.getId();
+            if (artistId != null && id == artistId) {
+                return artist;
+            }
+        }
+        return null;
+    }
 }

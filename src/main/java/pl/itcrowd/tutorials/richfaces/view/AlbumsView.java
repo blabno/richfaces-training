@@ -1,10 +1,13 @@
 package pl.itcrowd.tutorials.richfaces.view;
 
 import pl.itcrowd.tutorials.richfaces.dao.AlbumDAO;
+import pl.itcrowd.tutorials.richfaces.dao.ArtistDAO;
+import pl.itcrowd.tutorials.richfaces.dao.EnsembleDAO;
 import pl.itcrowd.tutorials.richfaces.domain.Album;
 import pl.itcrowd.tutorials.richfaces.domain.AlbumTranslation;
+import pl.itcrowd.tutorials.richfaces.domain.Artist;
+import pl.itcrowd.tutorials.richfaces.domain.Ensemble;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -24,6 +27,16 @@ public class AlbumsView implements Serializable {
 
     @ManagedProperty("#{albumDAO}")
     private AlbumDAO albumDAO;
+
+    @ManagedProperty("#{artistDAO}")
+    private ArtistDAO artistDAO;
+
+    private List<Artist> artists;
+
+    @ManagedProperty("#{ensembleDAO}")
+    private EnsembleDAO ensembleDAO;
+
+    private List<Ensemble> ensembles;
 
     private List<Locale> locales;
 
@@ -52,6 +65,42 @@ public class AlbumsView implements Serializable {
         return albumDAO.getAllAlbums();
     }
 
+    public ArtistDAO getArtistDAO()
+    {
+        return artistDAO;
+    }
+
+    public void setArtistDAO(ArtistDAO artistDAO)
+    {
+        this.artistDAO = artistDAO;
+    }
+
+    public List<Artist> getArtists()
+    {
+        if (artists == null) {
+            artists = artistDAO.getAllArtists();
+        }
+        return artists;
+    }
+
+    public EnsembleDAO getEnsembleDAO()
+    {
+        return ensembleDAO;
+    }
+
+    public void setEnsembleDAO(EnsembleDAO ensembleDAO)
+    {
+        this.ensembleDAO = ensembleDAO;
+    }
+
+    public List<Ensemble> getEnsembles()
+    {
+        if (ensembles == null) {
+            ensembles = ensembleDAO.getAllEnsemble();
+        }
+        return ensembles;
+    }
+
     public List<Locale> getLanguages()
     {
         if (locales == null) {
@@ -66,7 +115,9 @@ public class AlbumsView implements Serializable {
 
     public void save()
     {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Saving album"));
+        albumDAO.save(album);
+        album = new Album();
+        setupTranslations();
     }
 
     private void setupTranslations()
