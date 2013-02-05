@@ -3,10 +3,21 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:rich="http://richfaces.org/rich" xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:a4j="http://richfaces.org/a4j">
+      xmlns:a4j="http://richfaces.org/a4j" xmlns:cu="http://java.sun.com/jsf/composite/components">
 
 <h:head>
     <title>Albums</title>
+    <h:outputStylesheet>
+        .prop .label {
+            display: inline-block;
+            width: 200px;
+        }
+
+        .rf-st-start img {
+            height: 14px;
+            vertical-align: middle;
+        }
+    </h:outputStylesheet>
 </h:head>
 
 <h:body>
@@ -44,25 +55,28 @@
                 <a4j:repeat value="#{albumsView.languages}" var="language">
                     <rich:tab name="tab#{language.displayName}" title="#{language.language}">
                         <f:facet name="header">#{language.language}</f:facet>
-                        <h:outputLabel for="title" value="Title"/>
-                        <h:inputText id="title" value="#{albumsView.album.translations[language.ISO3Language].title}"/>
+                        <cu:edit label="Title">
+                            <h:inputText id="title" value="#{albumsView.album.translations[language.ISO3Language].title}"/>
+                        </cu:edit>
                     </rich:tab>
                 </a4j:repeat>
             </rich:tabPanel>
 
-            <h:outputLabel for="ensembles" value="Ensemble"/>
-            <h:selectOneListbox id="ensembles" size="1" value="#{albumsView.album.ensemble}">
-                <f:selectItem noSelectionOption="true"/>
-                <f:selectItems value="#{albumsView.ensembles}" var="ensemble" itemValue="#{ensemble}" itemLabel="#{ensemble.name}"/>
-                <a4j:ajax event="change" render="artists"/>
-            </h:selectOneListbox>
+            <cu:edit id="ensembles" label="Ensemble">
+                <h:selectOneListbox size="1" value="#{albumsView.album.ensemble}">
+                    <f:selectItem noSelectionOption="true"/>
+                    <f:selectItems value="#{albumsView.ensembles}" var="ensemble" itemValue="#{ensemble}" itemLabel="#{ensemble.name}"/>
+                    <a4j:ajax event="change" render="artists"/>
+                </h:selectOneListbox>
+            </cu:edit>
 
-            <h:outputLabel for="artists" value="Artist"/>
-            <h:selectOneListbox id="artists" size="1" value="#{albumsView.album.artist}">
-                <f:selectItem noSelectionOption="true"/>
-                <f:selectItems value="#{albumsView.artists}" var="artist" itemValue="#{artist}" itemLabel="#{artist.name}"/>
-                <a4j:ajax event="change" render="ensembles"/>
-            </h:selectOneListbox>
+            <cu:edit id="artists" label="Artist">
+                <h:selectOneListbox size="1" value="#{albumsView.album.artist}">
+                    <f:selectItem noSelectionOption="true"/>
+                    <f:selectItems value="#{albumsView.artists}" var="artist" itemValue="#{artist}" itemLabel="#{artist.name}"/>
+                    <a4j:ajax event="change" render="ensembles"/>
+                </h:selectOneListbox>
+            </cu:edit>
 
             <div>
                 <h:commandButton value="Save" action="#{albumsView.save}"/>
