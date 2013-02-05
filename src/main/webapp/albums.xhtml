@@ -2,7 +2,8 @@
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:rich="http://richfaces.org/rich" xmlns:f="http://java.sun.com/jsf/core">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:rich="http://richfaces.org/rich" xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j">
 
 <h:head>
     <title>Albums</title>
@@ -31,6 +32,18 @@
         </rich:column>
     </rich:dataTable>
 
+    <h:form>
+        <rich:tabPanel>
+            <a4j:repeat value="#{albumsView.languages}" var="language">
+                <rich:tab name="tab#{language.displayName}" title="#{language.language}">
+                    <f:facet name="header">#{language.language}</f:facet>
+                    <h:outputLabel for="title" value="Title"/>
+                    <h:inputText id="title" value="#{albumsView.album.translations[language.ISO3Language].title}"/>
+                </rich:tab>
+            </a4j:repeat>
+        </rich:tabPanel>
+        <h:commandButton value="Save" action="#{albumsView.save}"/>
+    </h:form>
 
 </h:body>
 
